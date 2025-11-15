@@ -2,17 +2,48 @@ name: Test Orchestrator
 
 # Allows a “Run workflow” button in the Actions tab
 on:
-  workflow_dispatch: {}
+    workflow_dispatch: {}
 
 jobs:
-  run-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # ---- your tests go here ----
-      - name: Run test for repo 
-        run: |
-          echo "Running tests..."
-          # replace this line with your actual test command(s)
+    run-unit-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  repository: JeffCompasClassrooms/testing-units-f25-drewlarso
+            - name: Install pytest and coverage
+              run: pip install pytest pytest-spec pytest-describe coverage
+            - name: Run pytest
+              run: pytest --spec
+            - name: Run coverage
+              run: coverage run -m pytest
+    run-behave-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  repository: JeffCompasClassrooms/testing-with-behave-drewlarso
+            - name: Install requirements
+              run: pip install selenium==3.141.0 behave==1.2.6 behave-webdriver==0.3.1 urllib3<2.0
+            - name: Install chrome
+              uses: browser-actions/setup-chrome@v2
+              with:
+                  install-chromedriver: true
+            - name: Run behave for fangamer
+              working-directory: fangamer
+              run: behave
+            - name: Run behave for godotengine
+              run: behave godotengine/features
+    run-system-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  repository: JeffCompasClassrooms/testing-systems-drewlarso
+            - name: Install pytest
+              run: pip install pytest pytest-spec pytest-describe
+            - name: Run pytest
+              run: pytest --spec
