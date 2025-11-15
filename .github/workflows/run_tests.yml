@@ -26,7 +26,7 @@ jobs:
               with:
                   repository: JeffCompasClassrooms/testing-with-behave-drewlarso
             - name: Install requirements
-              run: pip install selenium==3.141.0 behave==1.2.6 behave-webdriver==0.3.1 urllib3<2.0
+              run: pip install selenium==3.141.0 behave==1.2.6 behave-webdriver==0.3.1 "urllib3<2.0"
             - name: Install chrome
               uses: browser-actions/setup-chrome@v2
               with:
